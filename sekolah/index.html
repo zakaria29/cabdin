@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Fixed Navbar Layout</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-navbar-fixed">
+<!-- Site wrapper -->
+<div id="app" class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+
+    <!-- Right navbar links -->
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="../../index3.html" class="brand-link elevation-4">
+      <img src="../assets/cabdin.png" alt="Cabdin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">CABDIN MALANG</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <!-- <div class="image">
+          <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div> -->
+        <div class="info">
+          <a href="#" class="d-block">
+            <h6><span class="fa fa-user-circle mr-1"></span> {{ admin.nama_admin_sekolah }}</h6>
+            <small>{{ (admin.sekolah === null) ? "" : admin.sekolah.nama_sekolah }}</small>
+          </a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <router-link to="/" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/jurnal" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>Jurnal</p>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/surat" class="nav-link">
+              <i class="nav-icon fas fa-envelope"></i>
+              <p>Surat</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link" @click="Logout">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>Logout</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <router-view class="my-3">
+    </router-view>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.1.0-pre
+    </div>
+    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="../plugins/toastr/toastr.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- vue js -->
+<script src="../dist/js/polyfill.min.js"></script>
+<script src="../dist/js/vue.min.js"></script>
+<script src="../dist/js/bootstrap-vue.min.js"></script>
+<script src="../dist/js/vue-router.js"></script>
+<script src="../dist/js/vue-cookies.js"></script>
+<script src="../dist/js/http-vue-loader.js"></script>
+<script src="../dist/js/axios.js"></script>
+
+<script type="text/javascript">
+    var router = [
+      { path: "/", name: "Home", component: httpVueLoader("dashboard.vue")},
+      { path: "/jurnal", name: "Jurnal", component: httpVueLoader("jurnal.vue")},
+      { path: "/surat", name: "Surat", component: httpVueLoader("surat.vue")},
+    ];
+
+      var routers = new VueRouter({ routes : router, base: "/" });
+      var base_url = "http://localhost/lumen-cabdin/public";
+      // var base_url = "http://smm.smktelkom-mlg.sch.id/api";
+      var app = new Vue({
+        el: "#app",
+        data: {
+          admin : {
+            id_admin_sekolah: "",
+            nama_admin_sekolah: "",
+            email: "",
+            kontak: "",
+            sekolah: null,
+          }
+        },
+        router: routers,
+        methods: {
+          authenticate : function(){
+            if (!this.$cookies.isKey("Api-Token")) {
+              window.location = "../login.html";
+            }else{
+              let token = this.$cookies.get("Api-Token");
+              let form = new FormData();
+              form.append("token",token);
+              axios.post(base_url+"/admin-sekolah/check", form)
+              .then(response => {
+                if (response.data.auth === false) {
+                  window.location = "../login.html";
+                }else {
+                  this.admin.id_admin_sekolah = response.data.admin_sekolah.id_admin_sekolah;
+                  this.admin.nama_admin_sekolah = response.data.admin_sekolah.nama_admin_sekolah;
+                  this.admin.email = response.data.admin_sekolah.email;
+                  this.admin.kontak = response.data.admin_sekolah.kontak;
+                  this.admin.sekolah = response.data.admin_sekolah.sekolah;
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            }
+          },
+
+          Logout : function(){
+            this.$cookies.remove("Api-Token");
+            window.location = "../login.html";
+          },
+
+        },
+
+        mounted(){
+          this.authenticate();
+        }
+      });
+    </script>
+<!-- end of vue js -->
+</body>
+</html>

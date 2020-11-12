@@ -34,7 +34,7 @@
                   <h6>Jenjang: {{ item.jenjang }}</h6>
                 </b-col>
                 <b-col>
-                  <b-button :variant="item.admin_sekolah !== null ? 'secondary' : 'success'" 
+                  <b-button :variant="item.admin_sekolah !== null ? 'secondary' : 'success'"
                   size="sm" v-on:click="Admin(item)"
                   v-b-modal.modal_admin block>
                       <span class="fa fa-user" v-if="item.admin_sekolah !== null"></span>
